@@ -109,23 +109,15 @@ const patchMyUser = (req, res) => {
 
   const id = req.user.id;
 
-  const { firstName, lastName, email, password, phone, birthday, gender, country } = req.body;
+  const { firstName, lastName, phone, birthday, gender, country } = req.body;
 
-  if (firstName || lastName || email || password || phone || birthday || gender || country) {
-    usersControllers.editUser(id, { firstName, lastName, email, password, phone, birthday, gender, country })
-      .then(data => {
-        if (data) {
-          res.status(200).json({ message: `User with Id: ${id}, edited succesfully` });
-        } else {
-          res.status(400).json({ message: "Invalid data" });
-        }
-      })
-      .catch(err => {
-        res.status(400).json({ message: err.message });
-      })
-  } else {
-    res.status(400).json({ message: "This data can't be edited" });
-  };
+  usersControllers.editUser(id, {firstName, lastName, phone, birthday, gender, country})
+    .then(() => {
+      res.status(200).json({message: "Your user was edited succesfully"});
+    })
+    .catch(err => {
+      res.status(400).json({message: err.message});
+    });
 
 };
 
@@ -133,13 +125,9 @@ const deleteMyUser = (req, res) => {
 
   const id = req.user.id;
 
-  usersControllers.deleteUser(id)
-    .then(data => {
-      if (data) {
-        res.status(204).json();
-      } else {
-        res.status(404).json({ message: "Invalid Id" });
-      }
+  usersControllers.editUser(id, {status: "inactive"})
+    .then(() => {
+        res.status(200).json({ message: "Your user was deleted succesfully" });
     })
     .catch(err => {
       res.status(400).json({ message: err.message });

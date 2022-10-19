@@ -2,6 +2,8 @@ const router = require("express").Router();
 
 const passport = require("passport");
 
+const adminValidate = require("../middlewares/role.middleware");
+
 const usersServices = require("./users.services");
 
 require("../middlewares/auth.middleware")(passport);
@@ -25,7 +27,15 @@ router.route("/me")
 
 router.route("/:id")
   .get(usersServices.getUserById)
-  .patch(usersServices.patchUser)
-  .delete(usersServices.deleteUser);
+  .patch(
+    passport.authenticate("jwt", {session: false}),
+    adminValidate,
+    usersServices.patchUser
+    )
+  .delete(
+    passport.authenticate("jwt", {session: false}),
+    adminValidate,
+    usersServices.deleteUser
+    );
 
-module.exports = router;
+module.exports = router; 

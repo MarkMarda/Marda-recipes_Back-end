@@ -10,6 +10,9 @@ const userRouter = require("./users/users.router");
 
 const authRouter = require("./auth/auth.router");
 
+const initModels = require("./models/initModels");
+
+
 
 app.use(express.json());
 
@@ -20,6 +23,8 @@ db.authenticate()
 db.sync()
   .then(() => {console.log("Database Synced")})
   .catch(() => {console.log(err)});
+
+initModels();
 
 app.get("/", (req, res) => {
 
