@@ -16,6 +16,8 @@ const recipesRouter = require("./recipes/recipes.router");
 
 const categoriesRouter = require("./categories/categories.router");
 
+const ingredientsRouter = require("./ingredients/ingredients.router");
+
 const initModels = require("./models/initModels");
 
 
@@ -50,6 +52,8 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/recipes", recipesRouter);
 
 app.use("api/v1/categories", categoriesRouter);
+
+app.use("/api/v1/ingredients", ingredientsRouter);
 
 app.listen(config.port, () => {
 
