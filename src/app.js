@@ -1,5 +1,7 @@
 const express = require("express");
 
+const cors = require("cors");
+
 const app = express();
 
 const db = require("./utils/database");
@@ -10,19 +12,25 @@ const userRouter = require("./users/users.router");
 
 const authRouter = require("./auth/auth.router");
 
+const recipesRouter = require("./recipes/recipes.router");
+
+const categoriesRouter = require("./categories/categories.router");
+
 const initModels = require("./models/initModels");
 
 
 
 app.use(express.json());
 
+app.use(cors());
+
 db.authenticate()
   .then(() => {console.log("Database Authenticated")})
-  .catch(() => {console.log(err)});
+  .catch((err) => {console.log(err)});
 
 db.sync()
   .then(() => {console.log("Database Synced")})
-  .catch(() => {console.log(err)});
+  .catch((err) => {console.log(err)});
 
 initModels();
 
@@ -38,6 +46,10 @@ app.get("/", (req, res) => {
 app.use("/api/v1/users", userRouter);
 
 app.use("/api/v1/auth", authRouter);
+
+app.use("/api/v1/recipes", recipesRouter);
+
+app.use("api/v1/categories", categoriesRouter);
 
 app.listen(config.port, () => {
 
