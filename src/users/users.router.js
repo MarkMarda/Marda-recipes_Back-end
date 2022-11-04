@@ -6,6 +6,8 @@ const adminValidate = require("../middlewares/role.middleware");
 
 const usersServices = require("./users.services");
 
+const {getUserRecipes} = require("../recipes/recipes.services");
+
 require("../middlewares/auth.middleware")(passport);
 
 
@@ -24,6 +26,8 @@ router.route("/me")
     passport.authenticate("jwt", {session: false}),
     usersServices.deleteMyUser
   );
+
+router.get("/me/my_recipes", passport.authenticate("jwt", {session: false}), getUserRecipes);
 
 router.route("/:id")
   .get(usersServices.getUserById)
